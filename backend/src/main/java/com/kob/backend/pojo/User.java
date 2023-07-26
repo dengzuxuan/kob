@@ -1,4 +1,4 @@
-package com.kob.kob.backend.pojo;
+package com.kob.backend.pojo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

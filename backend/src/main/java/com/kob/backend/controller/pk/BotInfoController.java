@@ -1,4 +1,4 @@
-package com.kob.kob.backend.controller.pk;
+package com.kob.backend.controller.pk;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
