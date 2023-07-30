@@ -52,7 +52,7 @@
         </ul>
 
         <ul class="navbar-nav "
-            v-else>
+            v-else-if="!$store.state.user.pulling_info">
           <router-link :to="{name:'user_account_login'}"
                        class="nav-link"
                        href="#"

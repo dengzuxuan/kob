@@ -23,32 +23,32 @@ public class RegisterServiceImpl implements RegisterService {
     public Map<String, String> register(String username, String password, String confirmPassword) {
         Map<String,String> map = new HashMap<>();
         if(username==null){
-            map.put("error_messgae","用户名不为空");
+            map.put("error_message","用户名不为空");
             return map;
         }
         if(password==null || confirmPassword==null){
-            map.put("error_messgae","密码不能为空");
+            map.put("error_message","密码不能为空");
             return map;
         }
         username = username.trim();
         if(username.length()==0){
-            map.put("error_messgae","用户名不为空");
+            map.put("error_message","用户名不为空");
             return map;
         }
         if(password.length()==0 || confirmPassword.length()==0){
-            map.put("error_messgae","密码不能为空");
+            map.put("error_message","密码不能为空");
             return map;
         }
         if(username.length()>100){
-            map.put("error_messgae","用户名不能大于100");
+            map.put("error_message","用户名不能大于100");
             return map;
         }
         if(password.length()>100){
-            map.put("error_messgae","密码不能大于100");
+            map.put("error_message","密码不能大于100");
             return map;
         }
         if(!password.equals(confirmPassword)){
-            map.put("error_messgae","两次输入的密码不一致");
+            map.put("error_message","两次输入的密码不一致");
             return map;
         }
 
@@ -56,7 +56,7 @@ public class RegisterServiceImpl implements RegisterService {
         queryWrapper.eq("username",username);
         List<User> users = userMapper.selectList(queryWrapper);
         if(!users.isEmpty()){
-            map.put("error_messgae","用户名已存在");
+            map.put("error_message","用户名已存在");
             return map;
         }
 
@@ -66,7 +66,7 @@ public class RegisterServiceImpl implements RegisterService {
         User user = new User(null,username,encodedPassword,photo);
         userMapper.insert(user);
 
-        map.put("error_messgae","success");
+        map.put("error_message","success");
         return map;
     }
 }
