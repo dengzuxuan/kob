@@ -29,14 +29,15 @@
           </li>
         </ul>
 
-        <ul class="navbar-nav ">
+        <ul class="navbar-nav "
+            v-if="$store.state.user.is_login">
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle"
                href="#"
                role="button"
                data-bs-toggle="dropdown"
                aria-expanded="false">
-              DengZX
+              {{$store.state.user.username}}
             </a>
             <ul class="dropdown-menu">
               <li>
@@ -44,9 +45,29 @@
                              :to="{name:'user_bot_index'}">我的Bots</router-link>
               </li>
               <li><a class="dropdown-item"
-                   href="#">退出</a></li>
+                   href="#"
+                   @click="logout">退出</a></li>
             </ul>
           </li>
+        </ul>
+
+        <ul class="navbar-nav "
+            v-else>
+          <router-link :to="{name:'user_account_login'}"
+                       class="nav-link"
+                       href="#"
+                       role="button"
+                       aria-expanded="false">
+            登录
+          </router-link>
+
+          <router-link :to="{name:'user_account_register'}"
+                       class="nav-link"
+                       href="#"
+                       role="button"
+                       aria-expanded="false">
+            注册
+          </router-link>
         </ul>
       </div>
     </div>
@@ -56,11 +77,18 @@
 <script>
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
+import { useStore } from 'vuex'
 export default {
   setup() {
     const route = useRoute()
+    const store = useStore()
     let route_name = computed(() => route.name)
-    return { route_name }
+
+    const logout = () => {
+      store.dispatch('logout')
+    }
+
+    return { route_name, logout }
   },
 }
 </script>
