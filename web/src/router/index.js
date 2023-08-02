@@ -1,12 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import store from '../store/index'
-import NotFound from '../views/error/NotFound'
-import PKIndexView from '../views/pk/PKIndexView'
-import RankLIstIndexView from '../views/ranklist/RanklistIndexView'
-import RecordIndexView from '../views/record/RecordIndexView'
+import NotFound from '../views/error/NotFound.vue'
+import PKIndexView from '../views/pk/PKIndexView.vue'
+import RankLIstIndexView from '../views/ranklist/RanklistIndexView.vue'
+import RecordIndexView from '../views/record/RecordIndexView.vue'
 import UserAccountLoginViewVue from '../views/user/account/UserAccountLoginView.vue'
 import UserAccountRegisterViewVue from '../views/user/account/UserAccountRegisterView.vue'
-import UserBotIndexView from '../views/user/bot/UserBotIndexView'
+import UserBotIndexView from '../views/user/bot/UserBotIndexView.vue'
 const routes = [
   {
     path: "/",
@@ -75,14 +75,35 @@ const router = createRouter({
 })
 
 //router跳转前执行的操作
-router.beforeEach((to,from,next) => {
-  if (to.meta.requestAuth && !store.state.user.is_login) {
-    next({
-      name:"user_account_login"
+router.beforeEach((to, from, next) => {
+
+  let flag = 1;
+  const jwt_token = localStorage.getItem("jwt_token");
+
+  if (jwt_token) {
+    store.commit("updateToken", jwt_token);
+    store.dispatch("getinfo", {
+      success() {
+      },
+      error() {
+        alert("token无效，请重新登录！");
+        router.push({ name: 'user_account_login' });
+      }
     })
   } else {
-    next()
+    flag = 2;
   }
-})
+
+  if (to.meta.requestAuth && !store.state.user.is_login) {
+    if (flag === 1) {
+      next();
+    } else {
+      alert("请先进行登录！");
+      next({name: "user_account_login"});
+    }
+  } else {
+    next();
+  }
+}) 
 
 export default router
