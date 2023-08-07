@@ -74,36 +74,59 @@ const router = createRouter({
   routes
 })
 
-//router跳转前执行的操作
-router.beforeEach((to, from, next) => {
-
-  let flag = 1;
-  const jwt_token = localStorage.getItem("jwt_token");
-
-  if (jwt_token) {
-    store.commit("updateToken", jwt_token);
-    store.dispatch("getinfo", {
-      success() {
-      },
-      error() {
-        alert("token无效，请重新登录！");
-        router.push({ name: 'user_account_login' });
-      }
-    })
-  } else {
-    flag = 2;
-  }
-
-  if (to.meta.requestAuth && !store.state.user.is_login) {
-    if (flag === 1) {
-      next();
-    } else {
-      alert("请先进行登录！");
-      next({name: "user_account_login"});
-    }
+router.beforeEach((to, from, next) => { 
+  if (to.meta.requestAuth && !store.state.user.is_login) {  
+    next({ name: "user_account_login" }); 
   } else {
     next();
   }
-}) 
+})
+
+
+
+//router跳转前执行的操作
+// router.beforeEach((to, from, next) => {
+
+//   let flag = 1;
+//   const jwt_token = localStorage.getItem("jwt_token");
+
+//   if (jwt_token) {
+//     store.commit("updateToken", jwt_token);
+//     store.dispatch("getinfo", {
+//       success() {
+//       },
+//       error() {
+//         alert("token无效，请重新登录！");
+//         router.push({ name: 'user_account_login' });
+//       }
+//     })
+//   } else {
+//     flag = 2;
+//   }
+
+//   if (to.meta.requestAuth && !store.state.user.is_login) {
+//     if (flag === 1) {
+//       next();
+//     } else {
+//       alert("请先进行登录！");
+//       next({name: "user_account_login"});
+//     }
+//   } else {
+//     next();
+//   }
+// }) 
+
+// router.beforeEach((to,from,next)=>{
+//     let jwt_token=localStorage.getItem('jwt_token');
+//     if(jwt_token){
+//       store.dispatch('getinfo',jwt_token);
+//       next();
+//     }else{
+//       if(to.meta.requestAuth&&!store.state.user.is_login)next({name:"user_account_token"});
+//       else
+//         next();
+//     }
+// })
+ 
 
 export default router
