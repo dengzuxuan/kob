@@ -77,12 +77,6 @@ export class Snake extends AcGameObject{
     }
 
 
-    //判断位置
-    console.log("this.gamemap.check_vaild(this.next_cell)",this.gamemap.check_vaild(this.next_cell))
-    if (!this.gamemap.check_vaild(this.next_cell)) {
-      this.status = "die";
-    }
-
     //蛇头节点向目标移动
   }
 
