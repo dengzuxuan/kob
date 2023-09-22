@@ -1,2 +1,6 @@
-package com.kob.matchingsystem.service.Impl;public class MatchingService {
+package com.kob.matchingsystem.service;
+
+public interface MatchingService {
+    String addPlayer(Integer userId,Integer rating,Integer botId);
+    String removePlayer(Integer userId);
 }

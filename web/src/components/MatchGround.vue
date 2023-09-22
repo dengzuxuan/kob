@@ -1,7 +1,7 @@
 <template>
   <div class="matchground">
     <div class="row">
-      <div class="col-6">
+      <div class="col-4">
         <div class="user-photo">
           <img :src="$store.state.user.photo"
                alt="">
@@ -10,7 +10,20 @@
           {{ $store.state.user.username }}
         </div>
       </div>
-      <div class="col-6">
+      <div class="col-4">
+        <div class="user-select-bot">
+          <select v-model="select_bot"
+                  class="form-select"
+                  aria-label="Default select example">
+            <option selected
+                    :value="-1">亲自出马</option>
+            <option v-for="bot in bots"
+                    :value="bot.id"
+                    :key="bot.id">{{bot.title}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-4">
         <div class="user-photo">
           <img :src="$store.state.pk.opponent_photo"
                alt="">
@@ -30,11 +43,14 @@
 </template>
 
 <script >
+import $ from 'jquery'
 import { ref } from 'vue'
 import { useStore } from 'vuex'
 export default {
   setup() {
+    let bots = ref([])
     const store = useStore()
+    let select_bot = ref(-1)
     let match_btn_info = ref('开始匹配')
     const click_match_btn = () => {
       if (match_btn_info.value === '开始匹配') {
@@ -42,6 +58,7 @@ export default {
         store.state.pk.socket.send(
           JSON.stringify({
             event: 'start-matching',
+            bot_id: select_bot.value,
           })
         )
       } else {
@@ -53,15 +70,45 @@ export default {
         )
       }
     }
+    const refresh_bots = () => {
+      $.ajax({
+        url: 'http://127.0.0.1:3000/user/bot/getlist/',
+        type: 'get',
+        headers: {
+          Authorization: 'Bearer ' + store.state.user.token,
+        },
+        success(resp) {
+          bots.value = resp
+        },
+        error(resp) {
+          console.log('error', resp)
+        },
+      })
+    }
+
+    refresh_bots() //从云端动态获取bots
+
     return {
       match_btn_info,
       click_match_btn,
+      bots,
+      refresh_bots,
+      select_bot,
     }
   },
 }
 </script>
 
 <style scoped>
+div.user-select-bot {
+  padding-top: 60px;
+}
+
+div.user-select-bot > select {
+  width: 60%;
+  margin: 0 auto;
+}
+
 div.matchground {
   width: 60vw;
   height: 70vh;
