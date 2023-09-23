@@ -29,7 +29,7 @@ public class WebSocketServer {
     //userid:websocket实例 static是对所有实例都可见【相当于全局变量】
     public static ConcurrentHashMap<Integer,WebSocketServer> users = new ConcurrentHashMap<>();
     private User user;
-    private static UserMapper userMapper;
+    public static UserMapper userMapper;
 
     public Game game = null;
 
