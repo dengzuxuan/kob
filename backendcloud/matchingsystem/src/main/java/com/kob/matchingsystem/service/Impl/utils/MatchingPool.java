@@ -54,8 +54,6 @@ public class MatchingPool extends Thread{
     }
 
     private void matchPlayer(){//尝试匹配
-        System.out.println("match start: "+players);
-
         boolean[] userMatched =new  boolean[players.size()];
         for(int i=0;i<players.size();i++){
             if(userMatched[i]) continue;
